@@ -1,0 +1,20 @@
+
+<style>
+  .box {
+    border: solid black 1px;
+    padding: 0.5em;
+    margin: 1em;
+    display: inline-block;
+  }
+
+</style>
+
+<div class="box">
+  <h2>Dice</h2>
+  
+  <div class="box dice">
+    {{currentNumber}}
+  </div>
+
+  <button (click)="rollDice()">Roll</button>
+</div>

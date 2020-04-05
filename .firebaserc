@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "opengameboard"
+  },
+  "targets": {
+    "opengameboard": {
+      "hosting": {
+        "OpenGameBoard": [
+          "opengameboard"
+        ]
+      }
+    }
+  }
+}
