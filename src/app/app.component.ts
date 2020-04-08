@@ -2,7 +2,7 @@ import { Component, HostListener } from '@angular/core';
 
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 
-interface Room {
+interface Table {
   notes: String;
 }
 
@@ -25,10 +25,10 @@ interface Player {
 export class AppComponent {
   title = 'OpenGameBoard';
 
-  playerName = 'Anonymous';
+  playerName = 'Anonym';
 
-  roomDoc: AngularFirestoreDocument<Room>
-  room: Room;
+  tableDoc: AngularFirestoreDocument<Table>
+  table: Table;
 
   playersCollection: AngularFirestoreCollection<Player>;
   players: Array<Player>;
@@ -46,28 +46,28 @@ export class AppComponent {
       playerName: ""
     };
 
-    this.room = {
+    this.table = {
       notes: ""
     }
   }
 
   ngOnInit() {
-    this.diceStateDoc = this.firestore.doc('rooms/mwD728EWLfKKgqbaiDpH/state/dice');
+    this.diceStateDoc = this.firestore.doc('tables/mwD728EWLfKKgqbaiDpH/state/dice');
     this.diceStateDoc.valueChanges().subscribe( diceState => {
       this.diceState = diceState
     });
 
-    this.roomDoc = this.firestore.doc('rooms/mwD728EWLfKKgqbaiDpH');
-    this.roomDoc.valueChanges().subscribe( room => {
-      this.room = room;
+    this.tableDoc = this.firestore.doc('tables/mwD728EWLfKKgqbaiDpH');
+    this.tableDoc.valueChanges().subscribe( table => {
+      this.table = table;
     });
 
-    this.playersCollection = this.firestore.collection('rooms/mwD728EWLfKKgqbaiDpH/players');
+    this.playersCollection = this.firestore.collection('tables/mwD728EWLfKKgqbaiDpH/players');
     this.playersCollection.valueChanges().subscribe( players => {
       this.players = players;
     });
 
-    //this.changePlayerName();
+    this.changePlayerName();
 
     this.playersCollection.add({name: this.playerName}).then( docRef => {
       this.playerDoc = this.firestore.doc(docRef);
@@ -80,7 +80,7 @@ export class AppComponent {
   }
 
   textareaChanged() {
-    this.roomDoc.update(this.room);
+    this.tableDoc.update(this.table);
   }
 
   increaseDiceCount() {
@@ -127,6 +127,12 @@ export class AppComponent {
     this.update();
   }
 
+  putAllDicesInCup() {
+    this.diceState.inCup = this.diceState.inCup.concat(this.diceState.onTable);
+    this.diceState.onTable = [];
+    this.update();
+  }
+
   rollDicesInCup() {
     if(this.diceState.inCup.length < 1) {
       return;
@@ -156,7 +162,7 @@ export class AppComponent {
     if(name.length > 0) {
       this.playerName = name;
     } else {
-      this.playerName = "Anonymous"
+      this.playerName = "Anonym"
     }
 
     if(this.playerDoc) {
