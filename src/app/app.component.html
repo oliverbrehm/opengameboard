@@ -7,14 +7,62 @@
     display: inline-block;
   }
 
+  textarea {
+    width: 20em;
+    height: 30em;
+  }
+
+  ul {
+    padding-left: 0;
+  }
+
+  li {
+    list-style-type: none;
+    border: solid black 1px;
+    margin: 0.3em;
+  }
+
 </style>
 
 <div class="box">
-  <h2>Dice</h2>
+  <h2>Notes</h2>
+  <textarea name="notesTextarea" [(ngModel)]='room.notes' (input)='textareaChanged()'></textarea>
+</div>
+
+<div class="box">
+  <h2>Table</h2>
+  <h3>Player: {{ diceState.playerName }}</h3>
+  <div *ngFor="let dice of diceState.onTable" class="box dice" (click)="putInCup(dice)">
+    {{ dice }}
+  </div>
+</div>
+
+<div class="box">
+  <h2>Cup</h2>
   
-  <div class="box dice">
-    {{ diceState.number }}
+  <div *ngFor="let dice of diceState.inCup" class="box dice">
+    ?
   </div>
 
-  <button (click)="rollDice()">Roll</button>
+  <button (click)="rollDicesInCup()">Roll</button>
+</div>
+
+<div class="box">
+  <h2>Players</h2>
+  <p>{{ playerName }} (<strong>YOU</strong>)</p>
+  <button (click)="changePlayerName()">Change</button>
+
+  <ul>
+    <li *ngFor="let player of players">
+      {{ player.name.length == 0 ? "Anonymous" : player.name }}
+      <button (click)="removePlayer(player)">X</button>
+    </li>
+  </ul>
+</div>
+
+<div class="box">
+  <h2>Number of dices:</h2>
+  {{ diceState.diceCount }}
+  <button (click)="increaseDiceCount()">+</button>
+  <button (click)="decreaseDiceCount()">-</button>
 </div>
