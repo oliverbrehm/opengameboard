@@ -67,7 +67,7 @@ export class AppComponent {
       this.players = players;
     });
 
-    this.changePlayerName();
+    //this.changePlayerName();
 
     this.playersCollection.add({name: this.playerName}).then( docRef => {
       this.playerDoc = this.firestore.doc(docRef);
@@ -84,11 +84,19 @@ export class AppComponent {
   }
 
   increaseDiceCount() {
+    if(this.diceState.diceCount >= 12) {
+      return
+    }
+
     this.diceState.diceCount++;
     this.updateDices();
   }
 
   decreaseDiceCount() {
+    if(this.diceState.diceCount <= 1) {
+      return
+    }
+
     this.diceState.diceCount--;
     this.updateDices();
   }

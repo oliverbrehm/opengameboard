@@ -1,15 +1,21 @@
 
 <style>
   .box {
-    border: solid black 1px;
+    border: solid rgb(255, 222, 103) 3px;
+    background-color: rgb(255, 250, 232);
+    border-radius: 1em;
     padding: 0.5em;
     margin: 1em;
-    display: inline-block;
   }
 
   textarea {
-    width: 20em;
-    height: 30em;
+    width: 95%;
+    height: 25em;
+    padding: 1em;
+  }
+
+  .label {
+    margin: 0.5em;
   }
 
   ul {
@@ -22,47 +28,140 @@
     margin: 0.3em;
   }
 
+  #header {
+    background-color: rgb(255, 231, 143);
+    display: block;
+    margin: 0;
+    padding: 1em;
+    border-bottom: 3px solid rgb(255, 222, 103);
+  }
+
+  #sidebar {
+    background-color: rgb(255, 231, 143);
+    float: right;
+    margin: 0;
+    padding: 0;
+    width: 20%;
+  }
+
+  #content {
+    margin: 0;
+    padding: 1em;
+    display: block;
+    width: 75%;
+  }
+
+  #cupContainer {
+    text-align: center;
+    display: inline-table;
+    width: 12em;
+  }
+
+  #dicesArea {
+    width: 90%;
+  }
+
+  #dicesContainer {
+    width: 70%;
+    display: inline-table;
+  }
+
+  #dicesCup {
+    border: solid rgb(78, 61, 6) 0.3em;
+    border-radius: 6em;
+    padding: 3em;
+    margin: 0;
+    display: inline-block;
+    width: 6em;
+    height: 6em;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .player {
+    background-color: darkcyan;
+    border: 0;
+    border-bottom: 1px solid green;
+    margin: 0;
+    padding: 0.5em;
+  }
+
+  .floatRight {
+    float: right;
+  }
+
+  .dice {
+    display: inline-block;
+    border: solid darkgray 2px;
+    border-radius: 4px;
+    width: 1.3em;
+    height: 1.3em;
+    text-align: center;
+  }
+
+  button {
+    margin: 0.5em;
+    border: 2px solid rgb(255, 222, 103);
+    border-radius: 5px;
+    background-color: transparent;
+  }
+
 </style>
 
-<div class="box">
-  <h2>Notes</h2>
-  <textarea name="notesTextarea" [(ngModel)]='room.notes' (input)='textareaChanged()'></textarea>
+<div id='header'>
+  <div class="floatRight">
+    <strong>{{ playerName }}</strong>
+    <button (click)="changePlayerName()">Change</button>
+
+    <br>
+
+    <strong>Number of dices: {{ diceState.diceCount }}</strong>
+    <button (click)="decreaseDiceCount()">-</button>
+    <button (click)="increaseDiceCount()">+</button>
+  </div>
+
+  <h3>Table #mwD728EWLfKKgqbaiDpH</h3>
+  <h2>My table</h2>
 </div>
 
-<div class="box">
-  <h2>Table</h2>
-  <h3>Player: {{ diceState.playerName }}</h3>
-  <div *ngFor="let dice of diceState.onTable" class="box dice" (click)="putInCup(dice)">
-    {{ dice }}
+<div>
+  <div id='sidebar'>
+    <h2 class="label">Players</h2>
+
+    <ul>
+      <li *ngFor="let player of players" class='player'>
+        {{ player.name.length == 0 ? "Anonymous" : player.name }}
+        <button style="float:right" (click)="removePlayer(player)">X</button>
+      </li>
+    </ul>
+  </div>
+
+  <div id='content'>
+    <h2>Dices</h2>
+    <div class='box dicesArea'>
+      <h3>Player: {{ diceState.playerName }}</h3>
+
+      <div id="dicesContainer">
+        <div class="dice" *ngFor="let dice of diceState.onTable" class="box dice" (click)="putInCup(dice)">
+          {{ dice }}
+        </div>
+      </div>
+      <div id="cupContainer">
+        <div id="dicesCup">          
+          <div *ngFor="let dice of diceState.inCup" class="dice">
+            ?
+          </div>
+        </div>
+
+        <button (click)="rollDicesInCup()">Roll</button>
+      </div>
+    </div>
+
+
+    <h2>Notes</h2>
+    <textarea class="box" name="notesTextarea" [(ngModel)]='room.notes' (input)='textareaChanged()'></textarea>
   </div>
 </div>
 
-<div class="box">
-  <h2>Cup</h2>
-  
-  <div *ngFor="let dice of diceState.inCup" class="box dice">
-    ?
-  </div>
 
-  <button (click)="rollDicesInCup()">Roll</button>
-</div>
 
-<div class="box">
-  <h2>Players</h2>
-  <p>{{ playerName }} (<strong>YOU</strong>)</p>
-  <button (click)="changePlayerName()">Change</button>
-
-  <ul>
-    <li *ngFor="let player of players">
-      {{ player.name.length == 0 ? "Anonymous" : player.name }}
-      <button (click)="removePlayer(player)">X</button>
-    </li>
-  </ul>
-</div>
-
-<div class="box">
-  <h2>Number of dices:</h2>
-  {{ diceState.diceCount }}
-  <button (click)="increaseDiceCount()">+</button>
-  <button (click)="decreaseDiceCount()">-</button>
-</div>
