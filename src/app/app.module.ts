@@ -6,7 +6,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore'
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { TableComponent } from './components/table/table.component';
+import { MainComponent } from './components/main/main.component'
 
 const firebaseConfig = {
   apiKey: "AIzaSyDgKF_vVuRcXnDmePzXqHvJquHfx1xM_Us",
@@ -21,7 +23,9 @@ const firebaseConfig = {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    TableComponent,
+    MainComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,61 @@
+
+<div class='header'>
+    <div class="floatRight">
+        <strong>{{ playerName }}</strong>
+        <button (click)="playerService.changePlayerName()">Ändern</button>
+
+        <br>
+
+        <strong>Würfel: {{ diceCount }}</strong>
+        <button (click)="diceService.decreaseDiceCount()">-</button>
+        <button (click)="diceService.increaseDiceCount()">+</button>
+
+    </div>
+
+    <h3>Tisch #mwD728EWLfKKgqbaiDpH</h3>
+    <a routerLink="/">Tisch verlassen</a>
+</div>
+
+<div>
+    <div id='sidebar'>
+        <h2 class="label">Spieler</h2>
+
+        <ul>
+        <li *ngFor="let player of playerService.players" class='player'>
+            {{ player.name.length == 0 ? "Anonym" : player.name }}
+            <button style="float:right" (click)="playerService.removePlayer(player)">X</button>
+        </li>
+        </ul>
+    </div>
+
+    <div id='content'>
+
+        <h2>Würfel</h2>
+        <div class='box dicesArea'>
+        <h3>Letzter Wurf: {{ diceService.diceState.playerName }}</h3>
+
+        <div id="dicesContainer">
+            <div class="dice" *ngFor="let dice of diceService.diceState.onTable" class="box dice" (click)="diceService.putInCup(dice)">
+            {{ dice }}
+            </div>
+        </div>
+        <div id="cupContainer">
+            <div id="dicesCup">          
+            <div *ngFor="let dice of diceService.diceState.inCup" class="dice">
+                ?
+            </div>
+            </div>
+
+            <button (click)="diceService.rollDicesInCup()">Würfeln</button>
+        </div>
+        
+        <br>
+        
+        <p>Klicke auf einen Würfel, um ihn in den Becher zu legen.</p><br>
+        <button (click)="diceService.putAllDicesInCup()">Alle in den Becher</button>
+        </div>
+
+        <h2>Notizen</h2>
+        <textarea class="box" name="notesTextarea" [(ngModel)]='tableService.table.notes' (input)='textareaChanged()'></textarea>
+    </div>
+</div>

@@ -3,3 +3,31 @@
     margin: 0;
     padding: 0;
   }
+
+  .floatRight {
+    float: right;
+  }
+
+  .header {
+    background-color: rgb(255, 231, 143);
+    display: block;
+    margin: 0;
+    padding: 1em;
+    border-bottom: 3px solid rgb(255, 222, 103);
+  }
+
+  .box {
+    border: solid rgb(255, 222, 103) 3px;
+    background-color: rgb(255, 250, 232);
+    border-radius: 1em;
+    padding: 0.5em;
+    margin: 1em;
+    display: inline-block;
+  }
+
+  button {
+    margin: 0.5em;
+    border: 2px solid rgb(255, 222, 103);
+    border-radius: 5px;
+    background-color: transparent;
+  }

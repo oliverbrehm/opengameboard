@@ -1,0 +1,78 @@
+textarea {
+  width: 95%;
+  height: 25em;
+  padding: 1em;
+}
+
+.label {
+  margin: 0.5em;
+}
+
+ul {
+  padding-left: 0;
+}
+
+li {
+  list-style-type: none;
+  border: solid black 1px;
+  margin: 0.3em;
+}
+
+#sidebar {
+  background-color: rgb(255, 231, 143);
+  float: right;
+  margin: 0;
+  padding: 0;
+  width: 20%;
+}
+
+#content {
+  margin: 0;
+  padding: 1em;
+  display: block;
+  width: 75%;
+}
+
+#cupContainer {
+  text-align: center;
+  display: inline-table;
+  width: 12em;
+}
+
+#dicesArea {
+  width: 90%;
+}
+
+#dicesContainer {
+  width: 70%;
+  display: inline-table;
+}
+
+#dicesCup {
+  border: solid rgb(78, 61, 6) 0.3em;
+  border-radius: 6em;
+  padding: 3em;
+  margin: 0;
+  display: inline-block;
+  width: 6em;
+  height: 6em;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.player {
+  background-color: darkcyan;
+  border: 0;
+  border-bottom: 1px solid green;
+  margin: 0;
+  padding: 0.5em;
+}
+
+.dice {
+  display: inline-block;
+  border: solid darkgray 2px;
+  border-radius: 4px;
+  width: 1.3em;
+  height: 1.3em;
+  text-align: center;
+}

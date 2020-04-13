@@ -1,0 +1,28 @@
+
+<div class="header">
+
+  <div class="floatRight">
+    <strong>{{ playerService.player.name }} </strong>
+    <button (click)="playerService.changePlayerName()"> Ändern</button>
+  </div>
+
+  <h1>OpenGameBoard</h1>
+
+</div>
+
+<div id="tableContainer">
+  <h2>Tables</h2>
+
+  <div class="table box table">
+    <h3>Table #0</h3>
+  
+    <ul>
+      <li *ngFor="let player of playerService.players">
+        {{ player.name.length == 0 ? "Anonym" : player.name }}
+    </li>
+    </ul>
+  
+    <a routerLink="/table">Enter</a>
+  </div>
+
+</div>
