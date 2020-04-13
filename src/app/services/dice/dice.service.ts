@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { PlayerService } from '../player/player.service';
 import { DiceState } from './DiceState';
+import { TableService } from '../table/table.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,19 +13,23 @@ export class DiceService {
   diceStateDoc: AngularFirestoreDocument<DiceState>;
   diceState: DiceState;
 
-  constructor(private firestore: AngularFirestore, private playerService: PlayerService) {
+  constructor(
+    private firestore: AngularFirestore, 
+    private playerService: PlayerService,
+    private tableService: TableService
+  ) {
+    this.diceState = this.clearState();
+   }
 
-    this.diceState = {
-      diceCount: 0,
-      inCup: [],
-      onTable: [],
-      playerName: ""
-    };
-
-    this.diceStateDoc = this.firestore.doc('tables/mwD728EWLfKKgqbaiDpH/state/dice');
-    this.diceStateDoc.valueChanges().subscribe( diceState => {
-      this.diceState = diceState
-    });
+   updateTable() {
+     if(this.tableService.currentTableSnapshot) { 
+      this.diceStateDoc = this.firestore.doc('tables/' + this.tableService.currentTableSnapshot.id + '/state/dice');
+      this.diceStateDoc.valueChanges().subscribe( diceState => {
+        this.diceState = diceState
+      });
+     } else {
+      this.diceState = this.clearState();
+     }
    }
 
   increaseDiceCount() {
@@ -43,6 +48,15 @@ export class DiceService {
 
     this.diceState.diceCount--;
     this.resetDices();
+  }
+
+  clearState(): DiceState {
+    return {
+      diceCount: 1,
+      inCup: [1],
+      onTable: [],
+      playerName: ""
+    };
   }
 
   resetDices() {
@@ -103,6 +117,8 @@ export class DiceService {
 
 
   update() {
-    this.diceStateDoc.update(this.diceState);
+    if(this.diceStateDoc) {
+      this.diceStateDoc.update(this.diceState);
+    }
   }
 }

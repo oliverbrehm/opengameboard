@@ -18,11 +18,11 @@ export class TableComponent implements OnInit {
     private diceService: DiceService,
     private tableService: TableService
   ) {
-
+    this.diceService.updateTable()
   }
 
   ngOnInit() {
-
+    
   }
 
   @HostListener('window:beforeunload', [ '$event' ])

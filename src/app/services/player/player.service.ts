@@ -28,7 +28,7 @@ export class PlayerService {
       this.playerDoc = this.firestore.doc(docRef);
     });
 
-    this.changePlayerName();
+    //this.changePlayerName();
   }
 
   changePlayerName() {

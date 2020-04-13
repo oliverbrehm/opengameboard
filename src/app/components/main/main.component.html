@@ -11,18 +11,21 @@
 </div>
 
 <div id="tableContainer">
-  <h2>Tables</h2>
+  <div class="floatRight">
+    <button (click)="tableService.newTable()">Neuer Tisch</button>
+  </div>
 
-  <div class="table box table">
-    <h3>Table #0</h3>
-  
-    <ul>
-      <li *ngFor="let player of playerService.players">
-        {{ player.name.length == 0 ? "Anonym" : player.name }}
-    </li>
-    </ul>
-  
-    <a routerLink="/table">Enter</a>
+  <h2>Tische</h2>
+
+  <div *ngFor="let table of tableService.tableSnapshots" class="table box table">
+    <h3>{{table.data().name}}</h3>
+    <strong># {{table.id}}</strong><br>
+    <br>
+
+    <button (click)="tableService.enterTable(table)">Enter</button><br>
+    <br>
+
+    <button (click)="tableService.deleteTable(table)">Tisch löschen</button>
   </div>
 
 </div>

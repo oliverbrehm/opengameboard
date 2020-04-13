@@ -12,7 +12,7 @@
 
     </div>
 
-    <h3>Tisch #mwD728EWLfKKgqbaiDpH</h3>
+    <h3>Tisch: {{ tableService.currentTable.name}}</h3>
     <a routerLink="/">Tisch verlassen</a>
 </div>
 
@@ -56,6 +56,6 @@
         </div>
 
         <h2>Notizen</h2>
-        <textarea class="box" name="notesTextarea" [(ngModel)]='tableService.table.notes' (input)='textareaChanged()'></textarea>
+        <textarea class="box" name="notesTextarea" [(ngModel)]='tableService.currentTable.notes' (input)='textareaChanged()'></textarea>
     </div>
 </div>

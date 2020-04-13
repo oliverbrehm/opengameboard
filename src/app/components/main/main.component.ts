@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PlayerService } from 'src/app/services/player/player.service';
+import { TableService } from 'src/app/services/table/table.service';
 
 @Component({
   selector: 'app-main',
@@ -8,7 +9,10 @@ import { PlayerService } from 'src/app/services/player/player.service';
 })
 export class MainComponent implements OnInit {
 
-  constructor(private playerService: PlayerService) { }
+  constructor(
+    private playerService: PlayerService,
+    private tableService: TableService
+  ) { }
 
   ngOnInit(): void {
 
