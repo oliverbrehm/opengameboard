@@ -23,7 +23,7 @@
         <ul>
         <li *ngFor="let player of players" class='player'>
             {{ player.name.length == 0 ? "Anonym" : player.name }}
-            <button style="float:right" (click)="tableService.removePlayer(player)">X</button>
+            <button (click)="tableService.removePlayer(player)">X</button>
         </li>
         </ul>
     </div>

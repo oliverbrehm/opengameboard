@@ -40,9 +40,11 @@ textarea {
 
 .dice {
   display: inline-block;
-  border: solid darkgray 2px;
+  border: solid darkgray 4px;
   border-radius: 4px;
   width: 1.3em;
   height: 1.3em;
   text-align: center;
+  font-weight: bold;
+  background-color: white;
 }
