@@ -2,7 +2,7 @@
 <div class='header'>
     <div class="floatRight">
         <strong>{{ playerName }}</strong>
-        <button (click)="playerService.changePlayerName()">Ändern</button>
+        <button (click)="playerService.changePlayerName()">Namen ändern</button>
 
         <br>
 
@@ -13,17 +13,17 @@
     </div>
 
     <h3>Tisch: {{ tableService.currentTable.name}}</h3>
-    <a routerLink="/">Tisch verlassen</a>
+    <button (click)="leaveTable()">Tisch verlassen</button>
 </div>
 
 <div>
-    <div id='sidebar'>
+    <div class='sidebar'>
         <h2 class="label">Spieler</h2>
 
         <ul>
-        <li *ngFor="let player of playerService.players" class='player'>
+        <li *ngFor="let player of players" class='player'>
             {{ player.name.length == 0 ? "Anonym" : player.name }}
-            <button style="float:right" (click)="playerService.removePlayer(player)">X</button>
+            <button style="float:right" (click)="tableService.removePlayer(player)">X</button>
         </li>
         </ul>
     </div>

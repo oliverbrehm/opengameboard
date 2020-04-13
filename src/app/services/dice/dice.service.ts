@@ -22,8 +22,8 @@ export class DiceService {
    }
 
    updateTable() {
-     if(this.tableService.currentTableSnapshot) { 
-      this.diceStateDoc = this.firestore.doc('tables/' + this.tableService.currentTableSnapshot.id + '/state/dice');
+     if(this.tableService.currentTable.id) { 
+      this.diceStateDoc = this.firestore.doc('tables/' + this.tableService.currentTable.id + '/state/dice');
       this.diceStateDoc.valueChanges().subscribe( diceState => {
         this.diceState = diceState
       });
@@ -96,7 +96,7 @@ export class DiceService {
       return;
     }
 
-    this.diceState.playerName = this.playerService.player.name;
+    this.diceState.playerName = this.playerService.currentPlayer.name;
 
     let inCupCount = this.diceState.inCup.length;
     let onTable = this.diceState.onTable;

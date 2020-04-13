@@ -31,3 +31,32 @@
     border-radius: 5px;
     background-color: transparent;
   }
+
+  .label {
+    margin: 0.5em;
+  }
+  
+  ul {
+    padding-left: 0;
+  }
+  
+  li {
+    list-style-type: none;
+    margin: 0.3em;
+  }
+  
+  .sidebar {
+    background-color: rgb(255, 231, 143);
+    float: right;
+    margin: 0;
+    padding: 0;
+    width: 20%;
+  }
+
+  .player {
+    background-color: darkcyan;
+    border: 0;
+    border-bottom: 1px solid green;
+    margin: 0;
+    padding: 0.5em;
+  }

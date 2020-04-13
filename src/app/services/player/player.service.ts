@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, QueryDocumentSnapshot } from '@angular/fire/firestore';
 
 import { Player } from "./Player";
 
@@ -9,46 +9,77 @@ import { Player } from "./Player";
 })
 export class PlayerService {
 
-  playersCollection: AngularFirestoreCollection<Player>;
-  players: Array<Player>;
-  playerDoc: AngularFirestoreDocument<Player>;
-  player: Player;
+  playerCollection: AngularFirestoreCollection<Player>;
+  players: Player[];
+
+  currentPlayerDoc: AngularFirestoreDocument<Player>;
+  currentPlayer: Player;
 
   constructor(private firestore: AngularFirestore) { 
-    this.playersCollection = this.firestore.collection('tables/mwD728EWLfKKgqbaiDpH/players');
-    this.playersCollection.valueChanges().subscribe( players => {
+    this.playerCollection = this.firestore.collection('players');
+  
+    this.playerCollection.snapshotChanges().subscribe(snapshots => {
+      this.players = [];
+
+      snapshots.forEach( snapshot => {
+        this.players.push(snapshot.payload.doc.data());
+      });
+
+    });
+
+    this.playerCollection.valueChanges().subscribe( players => {
       this.players = players;
     });
 
-    this.player = {
-      name: "Anonym"
+    this.currentPlayer = {
+      name: "Anonym",
+      id: ""
     };
 
-    this.playersCollection.add(this.player).then( docRef => {
-      this.playerDoc = this.firestore.doc(docRef);
+    this.playerCollection.add(this.currentPlayer).then( docRef => {
+      this.currentPlayerDoc = this.firestore.doc(docRef);
+      this.currentPlayer.id = docRef.id
+      this.currentPlayerDoc.update(this.currentPlayer);
     });
 
     //this.changePlayerName();
   }
 
+  playersForIds(ids: string[]) {
+    let players = [];
+
+    ids.forEach(id => {
+      let player = this.playerForId(id);
+      if(player) {
+        players.push(player);
+      }
+    });
+    
+    return players;
+  }
+
+  playerForId(id: string): Player {
+    return this.players.filter(player => player.id === id)[0];
+  }
+
   changePlayerName() {
     let name = prompt("Hallo, wie heißt du?");
     if(name && name.length > 0) {
-      this.player.name = name;
+      this.currentPlayer.name = name;
     } else {
-      this.player.name = "Anonym"
+      this.currentPlayer.name = "Anonym"
     }
 
-    if(this.playerDoc) {
-      this.playerDoc.update(this.player);
+    if(this.currentPlayerDoc) {
+      this.currentPlayerDoc.update(this.currentPlayer);
     }
   }
 
   logout() {
-    this.playerDoc.delete();
+    this.currentPlayerDoc.delete();
   }
 
   removePlayer(player: Player) {
-    // TODO remove player from db
+    this.playerCollection.doc(player.id).delete();
   }
 }

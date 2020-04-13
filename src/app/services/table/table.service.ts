@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, QueryDocumentSnapshot } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { Table } from './Table';
 import { Router } from '@angular/router';
-import { DiceService } from '../dice/dice.service';
+import { Player } from '../player/Player';
 
 @Injectable({
   providedIn: 'root'
@@ -11,34 +11,26 @@ import { DiceService } from '../dice/dice.service';
 export class TableService {
 
   tablesCollection: AngularFirestoreCollection<Table>;
-  tableSnapshots: QueryDocumentSnapshot<Table>[];
   tables: Table[];
 
   currentTable: Table;
-  currentTableSnapshot: QueryDocumentSnapshot<Table>;
 
   constructor(private firestore: AngularFirestore, private router: Router) { 
 
     this.currentTable = {
+      id: "",
       name: "",
-      notes: ""
+      notes: "", 
+      playerIds: []
     }
 
     this.tablesCollection = this.firestore.collection('tables');
 
     this.tablesCollection.snapshotChanges().subscribe( actions => {
       this.tables = [];
-      this.tableSnapshots = [];
 
       actions.forEach( action => {
         this.tables.push(action.payload.doc.data());
-        this.tableSnapshots.push(action.payload.doc);
-
-
-        console.log("id: " + action.payload.doc.id);
-        console.log("type: " + action.type + ", payl type: " + action.payload.type);
-        console.log("data: " + action.payload.doc.data().name);
-        console.log("---");
       })
     })
   }
@@ -48,10 +40,17 @@ export class TableService {
 
     if(!name) { return; }
 
-    this.tablesCollection.add({
+    let table = {
+      id: "",
       name: name,
-      notes: ""
-    }).then( document => {
+      notes: "",
+      playerIds: []
+    }
+
+    this.tablesCollection.add(table).then( document => {
+      table.id = document.id;
+      document.update(table);
+
       this.firestore.doc("tables/" + document.id + "/state/dice").set({
         diceCount: 1,
         inCup: [1],
@@ -61,22 +60,33 @@ export class TableService {
     });
   }
 
-  enterTable(tableSnapshot: QueryDocumentSnapshot<Table>) {
-    this.tableSnapshots.forEach( table => {
-      if(table.id == tableSnapshot.id) {
-        this.currentTableSnapshot = table;
-        this.currentTable = table.data();
-        this.router.navigate(["/table"]);
-      }
+  enterTable(table: Table) {
+    this.currentTable = table;
+
+    this.tablesCollection.doc(table.id).valueChanges().subscribe(table => {
+      this.currentTable = <Table>table;
     });
 
+    this.update();
+
+    this.router.navigate(["/table"]);
+  }
+
+  removePlayer(player: Player) {
+    let index = this.currentTable.playerIds.indexOf(player.id);
+    console.log(index);
+    this.currentTable.playerIds.splice(index, 1);
+    this.update();
   }
 
   deleteTable(tableSnapshot: QueryDocumentSnapshot<Table>) {
     this.tablesCollection.doc(tableSnapshot.id).delete();
   }
 
-  updateNotes() {
-    this.currentTableSnapshot.ref.update(this.currentTable);
+  update() {
+    console.log('updating ' + this.currentTable.id);
+    if(this.currentTable) {
+      this.tablesCollection.doc(this.currentTable.id).update(this.currentTable);
+    }
   }
 }

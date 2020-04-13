@@ -2,27 +2,43 @@
 <div class="header">
 
   <div class="floatRight">
-    <strong>{{ playerService.player.name }} </strong>
-    <button (click)="playerService.changePlayerName()"> Ändern</button>
+    <strong>{{ playerService.currentPlayer.name }} </strong>
+    <button (click)="playerService.changePlayerName()"> Namen ändern</button>
   </div>
 
-  <h1>OpenGameBoard</h1>
+  <h1>Open Game Board</h1>
 
 </div>
 
+<div class='sidebar'>
+  <h2 class="label">Spieler</h2>
+
+  <ul>
+  <li *ngFor="let player of playerService.players" class='player'>
+      {{ player.name.length == 0 ? "Anonym" : player.name }}
+      <button (click)="playerService.removePlayer(player)">X</button>
+  </li>
+  </ul>
+</div>
+
 <div id="tableContainer">
-  <div class="floatRight">
-    <button (click)="tableService.newTable()">Neuer Tisch</button>
-  </div>
 
   <h2>Tische</h2>
+  <button (click)="tableService.newTable()">Neuer Tisch</button><br>
 
-  <div *ngFor="let table of tableService.tableSnapshots" class="table box table">
-    <h3>{{table.data().name}}</h3>
+  <div *ngFor="let table of tableService.tables" class="table box table">
+    <h3>{{table.name}}</h3>
     <strong># {{table.id}}</strong><br>
     <br>
 
-    <button (click)="tableService.enterTable(table)">Enter</button><br>
+    <strong>Spieler:</strong>
+    <ul>
+      <li *ngFor="let player of playerService.playersForIds(table.playerIds)">
+        {{ player.name.length == 0 ? "Anonym" : player.name }}
+      </li>
+    </ul>
+
+    <button (click)="enterTable(table)">Beitreten</button><br>
     <br>
 
     <button (click)="tableService.deleteTable(table)">Tisch löschen</button>
